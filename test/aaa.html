@@ -1,0 +1,28 @@
+<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+
+
+<div id="updateTime"></div>
+<div id="time"></div>
+<script>
+function systemDate(){
+
+var date=new Date();
+var month=date.getMonth()+1;
+var minutes=date.getMinutes(),Min;
+var seconds=date.getSeconds(),updateTime;
+minutes<=9 ? Min="0"+minutes : Min=minutes;
+var time=date.getFullYear()+"/"+month+"/"+date.getDate()+" "+date.getHours()+":"+Min+":"+seconds;
+
+$("#updateTime").text(time);
+$("#time").text(Math.round(new Date().getTime()/1000.0));
+}
+setInterval(systemDate, 500);
+
+var myDate = new Date("July 1, 1978 02:30:00"); // Your timezone!
+var myEpoch = myDate.getTime()/1000.0;
+var aaa = Math.round(new Date().getTime()/1000.0 - myEpoch)
+document.write(myEpoch);
+function date2epoch(myDate)
+date2epoch = DateDiff("s", "01/01/1970 00:00:00", myDate)
+}
+</script>

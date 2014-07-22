@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+
+  <title>{{title}}</title>
+</head>
+<body>
+
+  <form action="/vote_update" method="post">
+    <div>
+      <h3>{{vote_title}}</h3>
+      <input name="vote_title" type="hidden" value="{{vote_title}}">
+      <div>
+        {% for op_vote in op_votes %}
+        <input id="{{op_vote}}" name="op_vote" type="radio" value="{{op_vote}}">
+        <label for="{{op_vote}}">{{op_vote}}</label>
+        {% endfor %}
+      </div>
+    </div>
+    <div>
+      <div>
+        <button id="send-answers" type="submit">送出答案</button>
+      </div>
+    </div>
+  </form>
+
+  <form action="/vote_update" method="post">
+    <input name="vote_title" type="hidden" value="{{vote_title}}">
+    <button type="submit" id="view-results">查看結果</button>
+  </form>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+
+<div id="updateTime"></div>
+<div>
+  <div class="img" data-src='1' time="194418169"></div>
+  <div class="time"></div>
+</div>
+<div>
+  <div class="img" data-src='2' time="1394450569"></div>
+  <div class="time"></div>
+</div>
+<div>
+  <div class="img" data-src='3' time="1394454169"></div>
+  <div class="time"></div>
+</div>
+
+
+<script>
+  function start(){
+    $( ".img" ).each(function( index, element ) {//element == this
+      systemDate( $(element).attr('time'), $(element).next('.time') );//將結束的時間值跟class為time的div帶入
+    });
+  }
+  function systemDate(times, timediv){
+    var GMT8 = 8*60*60 //+8小時
+    ,end = times
+    ,today = new Date().getTime()/1000.0 + GMT8 //格林威治標準時間+8小時
+    ,secs = Math.round(end - today)
+    ,hour = Math.floor(secs / (60 * 60)) //總秒數除秒(60)再除分(60)的結果=小時數
+    ,Min = Math.floor( secs / 60 % 60) //總秒數除秒(60) 再除分(60)的餘數=分鐘數
+    ,sec = parseInt( secs % 60 )//總秒數除秒(60)的餘數=秒數
+    ,time;
+
+    if(Min < 10){//分鐘小於10 前面加一個0
+      Min='0'+ Min
+    }
+    if(sec < 10){//秒小於10 前面加一個0
+      sec='0'+ sec
+    }
+    if (secs < 0){ //如果總秒數為負值 代表商品時間已過 秀出0時00分00秒
+      $(timediv).text('0時00分00秒')
+    }else{
+      $(timediv).text(hour+'時'+Min+'分'+sec+'秒');
+    }
+
+  }
+
+setInterval(start, 500);//設定時間間隔
+//start();
+
+
+</script>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<head>
+<title>{{title}}</title>
+</head>
+<body>
+    <div>
+        <h3>{{vote_title}}</h3>
+        <div>
+            {% for op_name in op_names %}
+            <div>
+                <b><span>{{op_name}}</span></b>
+                <div class="right percent">
+                    得票率：{{percents[loop.index0]}}%
+                </div>
+                <div class="right votes">
+                    票數：&nbsp;{{op_votes[loop.index0]}}票
+                </div>
+            </div>
+            <br>
+            {% endfor %}
+        </div>
+
+        <p class="text-right">總票數: {{votes}}</p>
+    </div>
+    <div style="float:right;">
+      <a href="/">返回</a>
+    </div>
+</body>

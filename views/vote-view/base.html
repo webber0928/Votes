@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>{{title}}</title>
+<script src="public/javascript/jquery.min.js"></script>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function() {
+  var counter = 3;
+  $("#add-answer").click(function() {
+    if (counter > 10) {
+      alert("最多10個選項");
+      return false;
+    }
+    var newTextBoxDiv = $(document.createElement('div')).attr("id", 'TextBoxDiv' + counter);
+    newTextBoxDiv.after().html('<label>選項 #' + counter + ' : </label>' + '<input required type="text" name="op_names" id="textbox' + counter + '" value="" >');
+    newTextBoxDiv.appendTo("#TextBoxesGroup");
+    counter++;
+  });
+  $("#removeButton").click(function() {
+    if (counter == 3) {
+      alert("至少兩個選項");
+      return false;
+    }
+    counter--;
+    $("#TextBoxDiv" + counter).remove();
+  });
+});
+</script>
+</head>
+<body>
+  <form action="/redirect" method="post">
+    <div>
+      <div>
+        <label>投票的名稱</label>
+      </div>
+
+      <div>
+        <input required name='nametitle' type="text">
+      </div>
+    </div>
+    <hr>
+    <div id='TextBoxesGroup'>
+      <div id="TextBoxDiv1">
+          <label>選項 #1 : </label><input required name='op_names' type='textbox' id='textbox1' >
+      </div>
+      <div id="TextBoxDiv2">
+          <label>選項 #2 : </label><input required name='op_names' type='textbox' id='textbox2' >
+      </div>
+    </div>
+
+    <div>
+      <div style="padding: 0;">
+        <div>
+          <label for="multiple"><input id="multiple" type="checkbox" value="multi">多個答案</label>
+        </div>
+
+        <div>
+          <a href="#" id="add-answer">增加新的選項</a>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div>
+        <button id="create-poll" type="submit">建立投票</button>
+      </div>
+    </div>
+  </form>
+  <div style="float:right;">
+    <a href="/vote_list">前往投票列表</a>
+  </div>
+</body>
+</html>

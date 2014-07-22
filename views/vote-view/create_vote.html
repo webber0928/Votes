@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>{{title}}</title>
+<script src="/javascripts/jquery.min.js"></script>
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="/styleshets/bootstrap.min.css">
+<!-- Optional theme -->
+<link rel="stylesheet" href="/styleshets/bootstrap-theme.min.css">
+<!-- Latest compiled and minified JavaScript -->
+<script src="/javascripts/bootstrap.min.js"></script>
+
+<link rel="stylesheet" href="/styleshets/vote.css">
+<script type="text/javascript">
+$(document).ready(function() {
+  var counter = 3;
+  $("#add-answer").click(function() {
+    if (counter > 10) {
+      alert("最多10個選項");
+      return false;
+    }
+    var newTextBoxDiv = $(document.createElement('div')).attr({id:'TextBoxDiv' + counter, class:'clear col-md-11'});
+    newTextBoxDiv.after().html('<label for="textbox'+counter+'">選項 #' + counter + ' ：</label>' + '<input required type="text" name="op_names" id="textbox' + counter + '" value="" class="form-control input-base">');
+    newTextBoxDiv.appendTo("#TextBoxesGroup");
+    counter++;
+
+    // + - 號的位置
+    var buttonPadding = $('#addremove').css('padding-top');
+    $('#addremove').css('padding-top', buttonPadding.split('px')[0] * 1 + 69 + 'px');
+  });
+  $("#remove-answer").click(function() {
+    if (counter == 3) {
+      alert("至少兩個選項");
+      return false;
+    }
+    counter--;
+    $("#TextBoxDiv" + counter).remove();
+
+    // + - 號的位置
+    var buttonPadding = $('#addremove').css('padding-top');
+    $('#addremove').css('padding-top', buttonPadding.split('px')[0] * 1 - 69 + 'px');
+  });
+});
+</script>
+</head>
+<body>
+  <div class = "container">
+    <form action = "/redirect" method = "post" role="form">
+      <div id = "header">
+        <div>
+          <label for="nametitle">投票的名稱</label>
+        </div>
+
+        <div class="col-md-11">
+          <input autofocus required id='nametitle' name='nametitle' type="text" class="form-control input-base">
+        </div>
+        <div class="clear"></div>
+        <hr>
+      </div>
+      <div id='TextBoxesGroup'>
+        <div id="TextBoxDiv1" class="clear clear col-md-11">
+            <label for="textbox1">選項 #1 ：</label><input required name='op_names' type='textbox' id='textbox1' class="form-control input-base">
+        </div>
+        <div id="TextBoxDiv2" class="clear clear col-md-11">
+            <label for="textbox2">選項 #2 ：</label><input required name='op_names' type='textbox' id='textbox2' class="form-control input-base">
+        </div>
+      </div>
+
+      <div>
+        <div>
+          <div style="display:none;">
+            <label for="multiple"><input id="multiple" type="checkbox" value="multi">多個答案</label>
+          </div>
+
+          <div class="buttonbox" id="addremove">
+            <button id="add-answer" type="button" class="btn-success">＋ </button>
+            <button id="remove-answer" type="button" class="btn-danger">－ </button>
+          </div>
+          <div class="clear">
+            <button id="create-poll" type="submit" class="btn btn-primary btn-lg btn-block">建立投票</button>
+          </div>
+        </div>
+      </div>
+    </form>
+    <div class="buttonbox">
+      <a href="/vote_list">前往投票列表</a>
+    </div>
+  </div>
+</body>
+</html>
