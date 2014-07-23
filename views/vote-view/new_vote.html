@@ -1,18 +1,114 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-TW">
 <head>
-  <title></title>
+  <meta charset="utf-8"/>
+  <title>NOWnews 民調中心 / 抓取投票的題目</title>
+  <link rel="stylesheet" type="text/css" href="http://legacy.nownews.com/iris/vote_html3/css/vote.css" />
+  <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+  <script type="text/javascript">
+    google.load("visualization", "1", {packages:["corechart"]});
+    google.setOnLoadCallback(drawChart);
+    function drawChart() {
+      var data = google.visualization.arrayToDataTable([
+        ['Task', 'Hours per Day'],
+        {% for op_vote in op_names %}['{{op_vote}}', {{op_votes[loop.index0]}}],{% endfor %}
+      ]);
 
-  <title>{{title}}</title>
+      var options = {
+        is3D: true,
+        width: 600,
+        chartArea:{top:'15px',left:'15',width:'100%',height:'75%'},
+        height: 640,
+        slices: {
+          0:  {color: '#ff0000'}, 
+          1:  {color: '#ff3800'}, 
+          2:  {color: '#ff7100'}, 
+          3:  {color: '#ffa400'}, 
+          4:  {color: '#ffca00'},
+          5:  {color: '#ffef00'}, 
+          6:  {color: '#f5ca2b'}, 
+          7:  {color: '#e26b76'}, 
+          8:  {color: '#cf0dc2'}, 
+          9:  {color: '#bc00dc'},
+          10: {color: '#a900ef'}, 
+          11: {color: '#9400ff'}, 
+          12: {color: '#6e00ff'}, 
+          13: {color: '#4800ff'}, 
+          14: {color: '#4328ff'},
+          15: {color: '#6986ff'}, 
+          16: {color: '#8ee5ff'}, 
+          17: {color: '#71f2bc'}, 
+          18: {color: '#38df5e'}, 
+          19: {color: '#00cc00'},
+        }
+      };
+
+
+      var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+      chart.draw(data, options);
+    }
+  </script>
 </head>
-<body>
+<body id="vote_2014">
+  <div class="main_title">民調中心</div>
+  <div class="content">
+    <!--問題 SET-->
+    <div class="question">
+      <ul>
+        <li>
+          <h1>{{vote_title}}</h1>
+        </li>
+        <li>
+          <!-- <em>(2014.04.12 AM 12:07 )</em> -->
+          <em>( {{ date|date('Y-m-d A H:i') }} )</em>
+          <div style="clear: both;"></div>
+        </li>
+        <li>
+          <div>
+            <ul>
+              <li class="sum_select">
+                <form action="/vote_update" method="post">
+                  <input name="vote_title" type="hidden" value="{{vote_title}}">
+                  {% for op_vote in op_names %}
+                  <p>
+                    <input id="{{op_vote}}" name="op_vote" type="radio" value="{{op_vote}}">
+                    {% if loop.index < 10 %}
+                      <span class="cube color0{{loop.index}}"></span>
+                    {% else %}
+                      <span class="cube color{{loop.index}}"></span>
+                    {% endif %}
+                    <label for="{{op_vote}}">{{op_vote}}</label>
+                  </p>
+                  {% endfor %}
+                  <input type="submit" name="Button" value="送出" >
+                </form>
+              </li>
+            </ul>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div style="clear: both;"></div>
+    <!--答案 SET-->
+    <div id="piechart">
 
-  <form action="/vote_update" method="post">
+    </div>
+    <div style="clear: both;"></div>
+
+    <!--下方總數統計及其他 SET-->
+    <div class="footer">總投票人數  {{votes}} / (為求計算結果之公允，每次投票均有次數與間隔之限制 )</div>
+
+  </div>
+
+
+
+
+  <!-- <form action="/vote_update" method="post">
     <div>
       <h3>{{vote_title}}</h3>
       <input name="vote_title" type="hidden" value="{{vote_title}}">
       <div>
-        {% for op_vote in op_votes %}
+        {% for op_vote in op_names %}
         <input id="{{op_vote}}" name="op_vote" type="radio" value="{{op_vote}}">
         <label for="{{op_vote}}">{{op_vote}}</label>
         {% endfor %}
@@ -25,9 +121,24 @@
     </div>
   </form>
 
-  <form action="/vote_update" method="post">
-    <input name="vote_title" type="hidden" value="{{vote_title}}">
-    <button type="submit" id="view-results">查看結果</button>
-  </form>
+  <div>
+    {% for op_name in op_names %}
+    <div>
+        <b><span>{{op_name}}</span></b>
+        <div class="right votes">
+            票數：&nbsp;{{op_votes[loop.index0]}}票
+        </div>
+    </div>
+    <br>
+    {% endfor %}
+  </div>
+
+  <p class="text-right">總票數: {{votes}}</p>
+
+  <div id="piechart" style="width: 900px; height: 500px;"></div>
+-->
+  <div style="float:right;">
+    <a href="/">返回</a>
+  </div>
 </body>
 </html>

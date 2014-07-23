@@ -35,9 +35,10 @@ MongoClient.connect('mongodb://127.0.0.1:27017/test', function(err, db) {
     collection.insert({
         name: req.body.nametitle,
         op_name: req.body.op_names,
-        op_vote: op_votes
+        op_vote: op_votes,
+        date: new Date() + 28800
     },function(err, docs) {});
-    res.redirect('/');
+    res.redirect('/vote_list');
   });
 
   app.get('/vote_list', function(req, res){
@@ -58,19 +59,41 @@ MongoClient.connect('mongodb://127.0.0.1:27017/test', function(err, db) {
     console.log(req.query)
     var search = { name : req.query.vote_title };
     collection.find(search).toArray(function(err, docs) {
+      var vote_title = docs[0].name
+          ,op_names = docs[0].op_name
+          ,op_votes = docs[0].op_vote
+          ,percents = []
+          ,votes = 0
+          ,date = docs[0].date;
+      for(var i in op_votes){ votes = op_votes[i]+votes}
+      for(var i in op_votes){
+        if(votes != 0){
+          var percent = Math.round(Math.ceil(op_votes[i]/votes*10000)/10000*1000)/10;
+          percents.push(percent);
+        }else{
+          percents.push(op_votes[i]);
+        }
+      }
+
+      console.dir(docs)
+      
       res.render('new_vote', {
         title: title,
         vote_title: docs[0].name,
-        op_votes: docs[0].op_name,
+        op_names: docs[0].op_name,
+        op_votes: op_votes,
+        percents: percents,
+        votes: votes,
+        date: date
       });
-      //console.log(docs[0].op_name)
     });
   });
 
   app.post('/vote_update', function(req, res){
     var search = { name : req.body.vote_title };
-    console.log(req.body)
+    console.log(req.body.vote_title)
     collection.find(search).toArray(function(err, docs) {
+      console.dir(docs)
       var op_votes = docs[0].op_vote;
       for(var i in docs[0].op_name){
         if( docs[0].op_name[i] == req.body.op_vote ){
@@ -84,7 +107,7 @@ MongoClient.connect('mongodb://127.0.0.1:27017/test', function(err, db) {
         }
       }
     });
-    res.redirect('/view_results?vote_title='+req.body.vote_title);
+    res.redirect('/new_vote?vote_title='+req.body.vote_title);
   })
 
   app.get('/view_results', function(req, res){

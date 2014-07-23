@@ -16,8 +16,8 @@
 $(document).ready(function() {
   var counter = 3;
   $("#add-answer").click(function() {
-    if (counter > 10) {
-      alert("最多10個選項");
+    if (counter > 20) {
+      alert("最多20個選項");
       return false;
     }
     var newTextBoxDiv = $(document.createElement('div')).attr({id:'TextBoxDiv' + counter, class:'clear col-md-11'});

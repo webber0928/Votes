@@ -1,17 +1,35 @@
-<h1>{{title}}</h1>
-<form action="/new_vote" method="get">
-  {% for vote_title in vote_titles %}
-  <div>
-    <input required id="{{vote_title.name}}" name="vote_title" type="radio" value="{{vote_title.name}}">
-    <label for="{{vote_title.name}}">{{vote_title.name}}</label>
+<!DOCTYPE html>
+<html>
+<head>
+<title>{{title}}</title>
+<script src="public/javascript/jquery.min.js"></script>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+  <div class = "container">
+
+    <h1>{{title}}</h1>
+    <form action="/new_vote" method="get">
+      {% for vote_title in vote_titles %}
+      <div>
+        <input required id="{{vote_title.name}}" name="vote_title" type="radio" value="{{vote_title.name}}">
+        <label for="{{vote_title.name}}">{{vote_title.name}}</label>
+      </div>
+      {% endfor %}
+      {%if vote_titles == ''%}
+        <h2>請<a href="/">返回</a>設定投票活動</h2>
+      {%endif%}
+      {%if vote_titles != ''%}
+        <button id="send-answers" type="submit">確認</button>
+      {%endif%}
+    </form>
   </div>
-  {% endfor %}
-  {%if vote_titles == ''%}
-    <h2>請<a href="/">返回</a>設定投票活動</h2>
-  {%endif%}
-  {%if vote_titles != ''%}
-    <button id="send-answers" type="submit">確認</button>
-  {%endif%}
-
-
-</form>
+</body>
+</html>
